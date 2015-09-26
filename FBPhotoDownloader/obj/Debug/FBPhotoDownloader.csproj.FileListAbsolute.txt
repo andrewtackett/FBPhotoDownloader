@@ -1,0 +1,11 @@
+c:\users\829356\documents\visual studio 2013\Projects\FBPhotoDownloader\FBPhotoDownloader\bin\Debug\FBPhotoDownloader.exe.config
+c:\users\829356\documents\visual studio 2013\Projects\FBPhotoDownloader\FBPhotoDownloader\bin\Debug\FBPhotoDownloader.exe
+c:\users\829356\documents\visual studio 2013\Projects\FBPhotoDownloader\FBPhotoDownloader\bin\Debug\FBPhotoDownloader.pdb
+c:\users\829356\documents\visual studio 2013\Projects\FBPhotoDownloader\FBPhotoDownloader\bin\Debug\Newtonsoft.Json.dll
+c:\users\829356\documents\visual studio 2013\Projects\FBPhotoDownloader\FBPhotoDownloader\bin\Debug\Newtonsoft.Json.xml
+c:\users\829356\documents\visual studio 2013\Projects\FBPhotoDownloader\FBPhotoDownloader\obj\Debug\FBPhotoDownloader.csprojResolveAssemblyReference.cache
+c:\users\829356\documents\visual studio 2013\Projects\FBPhotoDownloader\FBPhotoDownloader\obj\Debug\FBPhotoDownloader.FBPhotoDownloader.resources
+c:\users\829356\documents\visual studio 2013\Projects\FBPhotoDownloader\FBPhotoDownloader\obj\Debug\FBPhotoDownloader.Properties.Resources.resources
+c:\users\829356\documents\visual studio 2013\Projects\FBPhotoDownloader\FBPhotoDownloader\obj\Debug\FBPhotoDownloader.csproj.GenerateResource.Cache
+c:\users\829356\documents\visual studio 2013\Projects\FBPhotoDownloader\FBPhotoDownloader\obj\Debug\FBPhotoDownloader.exe
+c:\users\829356\documents\visual studio 2013\Projects\FBPhotoDownloader\FBPhotoDownloader\obj\Debug\FBPhotoDownloader.pdb
