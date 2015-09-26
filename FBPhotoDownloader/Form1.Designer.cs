@@ -29,10 +29,11 @@
         private void InitializeComponent()
         {
             this.outputSelect = new System.Windows.Forms.Button();
-            this.downloadPhotos = new System.Windows.Forms.Button();
+            this.downloadBtn = new System.Windows.Forms.Button();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.outputText = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -46,15 +47,15 @@
             this.outputSelect.UseVisualStyleBackColor = true;
             this.outputSelect.Click += new System.EventHandler(this.outputSelect_Click);
             // 
-            // downloadPhotos
+            // downloadBtn
             // 
-            this.downloadPhotos.Location = new System.Drawing.Point(12, 67);
-            this.downloadPhotos.Name = "downloadPhotos";
-            this.downloadPhotos.Size = new System.Drawing.Size(144, 23);
-            this.downloadPhotos.TabIndex = 1;
-            this.downloadPhotos.Text = "Download Photos";
-            this.downloadPhotos.UseVisualStyleBackColor = true;
-            this.downloadPhotos.Click += new System.EventHandler(this.downloadPhotos_Click);
+            this.downloadBtn.Location = new System.Drawing.Point(12, 67);
+            this.downloadBtn.Name = "downloadBtn";
+            this.downloadBtn.Size = new System.Drawing.Size(144, 23);
+            this.downloadBtn.TabIndex = 1;
+            this.downloadBtn.Text = "Download Photos";
+            this.downloadBtn.UseVisualStyleBackColor = true;
+            this.downloadBtn.Click += new System.EventHandler(this.downloadBtn_Click);
             // 
             // pictureBox1
             // 
@@ -78,15 +79,26 @@
             this.outputText.Size = new System.Drawing.Size(260, 20);
             this.outputText.TabIndex = 4;
             // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(12, 253);
+            this.label1.MaximumSize = new System.Drawing.Size(260, 0);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(35, 13);
+            this.label1.TabIndex = 5;
+            this.label1.Text = "label1";
+            // 
             // FBPhotoDownloader
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(284, 262);
+            this.ClientSize = new System.Drawing.Size(284, 271);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.outputText);
             this.Controls.Add(this.progressBar1);
             this.Controls.Add(this.pictureBox1);
-            this.Controls.Add(this.downloadPhotos);
+            this.Controls.Add(this.downloadBtn);
             this.Controls.Add(this.outputSelect);
             this.Name = "FBPhotoDownloader";
             this.Text = "FB Photo Downloader";
@@ -99,10 +111,11 @@
         #endregion
 
         private System.Windows.Forms.Button outputSelect;
-        private System.Windows.Forms.Button downloadPhotos;
+        private System.Windows.Forms.Button downloadBtn;
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.ProgressBar progressBar1;
         private System.Windows.Forms.TextBox outputText;
+        private System.Windows.Forms.Label label1;
     }
 }
 
