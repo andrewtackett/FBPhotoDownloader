@@ -248,6 +248,12 @@ namespace FBPhotoDownloader
 
             pd.labelText = "Getting list of photos";
             worker.ReportProgress(0, pd);
+            
+            var potentialExistingAlbums = Directory.EnumerateDirectories(outputLocation).Select(Path.GetFileName);
+
+            bool foundExistingPhotos = false;
+
+            Application.UseWaitCursor = true;
 
             for (int i = 0; i < albumIDs.Count; i++)
             {
@@ -255,11 +261,36 @@ namespace FBPhotoDownloader
                 string photoIDsURL = "https://graph.facebook.com/v2.4/" + curAlbum.id + "/photos?access_token=" + accessToken;
 
                 List<photo> photoIDs = getPhotoData(photoIDsURL);
+
+                //Make sure we aren't duplicating work by redownloading existing photos
+                if (potentialExistingAlbums.Count() > 0)
+                {
+                    if (potentialExistingAlbums.Contains(stripIllegalCharacters(curAlbum.name)))
+                    {
+                        //var existingPhotos = Directory.GetFiles(outputLocation + "\\" + curAlbum.name);
+                        var existingPhotos = Directory.EnumerateFiles(outputLocation + "\\" + stripIllegalCharacters(curAlbum.name)).Select(Path.GetFileNameWithoutExtension);
+                        foreach(string existingPhoto in existingPhotos)
+                        {
+                            photo duplicate = photoIDs.Find(x => x.id.Equals(existingPhoto));
+                            if(duplicate.id != "")
+                            {
+                                foundExistingPhotos = true;
+                                photoIDs.Remove(duplicate);
+                            }
+                        }
+                    }
+                }
+
                 curAlbum.photos = photoIDs;
                 totalPhotos += photoIDs.Count;
-                pd.labelText = "Photos found so far: " + totalPhotos;
+                if (foundExistingPhotos)
+                    pd.labelText = "Searched (" + (i + 1) + "/" + albumIDs.Count + ") Albums. New photos found so far: " + totalPhotos;
+                else
+                    pd.labelText = "Searched (" + (i + 1) + "/" + albumIDs.Count + ") Albums. Photos found so far: " + totalPhotos;
                 worker.ReportProgress(0, pd);
             }
+
+            Application.UseWaitCursor = false;
 
             downloadPhotos(albumIDs, accessToken, totalPhotos, worker);
         }
@@ -281,11 +312,11 @@ namespace FBPhotoDownloader
 
                     progressData pd;
                     pd.curPhotoPath = outputPath;
-                    pd.labelText = "(" + curPhotoNum + "/" + totalPhotos + ") " + outputPath;
+                    pd.labelText = "(" + (curPhotoNum + 1) + "/" + totalPhotos + ") " + outputPath;
 
                     downloadPhoto(photoLink, outputPath,curPhoto.name);
                     curPhotoNum++;
-                    int progress = (int)(((double)curPhotoNum / totalPhotos) * 100);
+                    int progress = (int)(((double)(curPhotoNum + 1) / totalPhotos) * 100);
                     worker.ReportProgress(progress, pd);
                 }
             }

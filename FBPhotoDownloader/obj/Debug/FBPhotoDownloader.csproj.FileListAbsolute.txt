@@ -9,10 +9,7 @@ c:\users\829356\documents\visual studio 2013\Projects\FBPhotoDownloader\FBPhotoD
 c:\users\829356\documents\visual studio 2013\Projects\FBPhotoDownloader\FBPhotoDownloader\obj\Debug\FBPhotoDownloader.csproj.GenerateResource.Cache
 c:\users\829356\documents\visual studio 2013\Projects\FBPhotoDownloader\FBPhotoDownloader\obj\Debug\FBPhotoDownloader.exe
 c:\users\829356\documents\visual studio 2013\Projects\FBPhotoDownloader\FBPhotoDownloader\obj\Debug\FBPhotoDownloader.pdb
-C:\Users\829356\documents\visual studio 2013\Projects\FBPhotoDownloader\FBPhotoDownloader\bin\Debug\XperiCode.JpegMetadata.dll
 C:\Users\829356\documents\visual studio 2013\Projects\FBPhotoDownloader\FBPhotoDownloader\bin\Debug\Meta.Core.dll
-C:\Users\829356\documents\visual studio 2013\Projects\FBPhotoDownloader\FBPhotoDownloader\bin\Debug\XmpCore.dll
 C:\Users\829356\documents\visual studio 2013\Projects\FBPhotoDownloader\FBPhotoDownloader\bin\Debug\itextsharp.dll
 C:\Users\829356\documents\visual studio 2013\Projects\FBPhotoDownloader\FBPhotoDownloader\bin\Debug\Interop.DSOFile.dll
 C:\Users\829356\documents\visual studio 2013\Projects\FBPhotoDownloader\FBPhotoDownloader\bin\Debug\Meta.Core.pdb
-C:\Users\829356\documents\visual studio 2013\Projects\FBPhotoDownloader\FBPhotoDownloader\bin\Debug\XmpCore.xml
