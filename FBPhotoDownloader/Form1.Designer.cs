@@ -61,28 +61,28 @@
             // 
             this.pictureBox1.Location = new System.Drawing.Point(12, 96);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(260, 125);
+            this.pictureBox1.Size = new System.Drawing.Size(307, 214);
             this.pictureBox1.TabIndex = 2;
             this.pictureBox1.TabStop = false;
             // 
             // progressBar1
             // 
-            this.progressBar1.Location = new System.Drawing.Point(12, 227);
+            this.progressBar1.Location = new System.Drawing.Point(11, 316);
             this.progressBar1.Name = "progressBar1";
-            this.progressBar1.Size = new System.Drawing.Size(260, 23);
+            this.progressBar1.Size = new System.Drawing.Size(307, 23);
             this.progressBar1.TabIndex = 3;
             // 
             // outputText
             // 
             this.outputText.Location = new System.Drawing.Point(12, 41);
             this.outputText.Name = "outputText";
-            this.outputText.Size = new System.Drawing.Size(260, 20);
+            this.outputText.Size = new System.Drawing.Size(307, 20);
             this.outputText.TabIndex = 4;
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(12, 253);
+            this.label1.Location = new System.Drawing.Point(11, 342);
             this.label1.MaximumSize = new System.Drawing.Size(260, 0);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(35, 13);
@@ -93,7 +93,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(284, 271);
+            this.ClientSize = new System.Drawing.Size(330, 375);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.outputText);
             this.Controls.Add(this.progressBar1);

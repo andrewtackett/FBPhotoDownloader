@@ -80,7 +80,6 @@ namespace FBPhotoDownloader
             JObject response = JObject.Parse(performWebRequest(url));
             List<photo> photos = new List<photo>();
 
-            Console.WriteLine("json:" + response);
             foreach (JToken token in response["data"])
             {
                 photo curphoto = new photo();
@@ -91,7 +90,6 @@ namespace FBPhotoDownloader
             }
 
             string next = response["paging"].Value<string>("next");
-            Console.WriteLine(next);
 
             if (response["paging"].Value<string>("next") != null)
                 photos.AddRange(getPhotoData(response["paging"]["next"].ToString()));
@@ -139,7 +137,7 @@ namespace FBPhotoDownloader
             WebClient wc = new WebClient();
             try
             {
-                StreamWriter sw = new StreamWriter(@"C:\fb\output.txt", true);
+                StreamWriter sw = new StreamWriter(@"errors.txt", true);
                 wc.DownloadFile(url, fileName);
                 ImageProcessor processor = new ImageProcessor(fileName);
                 ImageProperties properties = new ImageProperties();
@@ -195,7 +193,7 @@ namespace FBPhotoDownloader
             //Handle rate limit error?
             //Add error logging?
             //Scale thumbnail and keep aspect ration
-            label1.Text = "download clicked!";
+            //Figure out why metadata can't be written on some images
             if (bw.IsBusy != true)
             {
                 outputSelect.Enabled = false;
@@ -215,7 +213,7 @@ namespace FBPhotoDownloader
             if (pd.curPhotoPath != "")
             {
                 Image currentPhoto = Image.FromFile(pd.curPhotoPath);
-                Image thumbnail = currentPhoto.GetThumbnailImage(currentPhoto.Width, currentPhoto.Height, myCallback, IntPtr.Zero);
+                Image thumbnail = currentPhoto.GetThumbnailImage(pictureBox1.Width, pictureBox1.Height, myCallback, IntPtr.Zero);
                 pictureBox1.Image = thumbnail;
             }
         }
@@ -225,6 +223,15 @@ namespace FBPhotoDownloader
             label1.Text = "Done!";
             outputSelect.Enabled = true;
             outputText.ReadOnly = false;
+        }
+
+        private void updateProgressText(string message,BackgroundWorker worker)
+        {
+            progressData pd;
+            pd.curPhotoPath = "";
+            pd.labelText = message;
+
+            worker.ReportProgress(0, pd);
         }
 
         private void bw_DoWork(object sender, DoWorkEventArgs e)
@@ -238,21 +245,15 @@ namespace FBPhotoDownloader
             string accessToken = input[0];
             int totalPhotos = 0;
 
-            progressData pd;
-            pd.curPhotoPath = "";
-            pd.labelText = "Getting album data";
-            worker.ReportProgress(0, pd);
+            updateProgressText("Getting album data",worker);
 
             string albumURL = "https://graph.facebook.com/v2.4/me/albums?access_token=" + accessToken;
             List<album> albumIDs = getAlbumData(albumURL);
 
-            pd.labelText = "Getting list of photos";
-            worker.ReportProgress(0, pd);
+            updateProgressText("Getting list of photos",worker);
             
             var potentialExistingAlbums = Directory.EnumerateDirectories(outputLocation).Select(Path.GetFileName);
-
             bool foundExistingPhotos = false;
-
             Application.UseWaitCursor = true;
 
             for (int i = 0; i < albumIDs.Count; i++)
@@ -283,10 +284,9 @@ namespace FBPhotoDownloader
                 curAlbum.photos = photoIDs;
                 totalPhotos += photoIDs.Count;
                 if (foundExistingPhotos)
-                    pd.labelText = "Searched (" + (i + 1) + "/" + albumIDs.Count + ") Albums. New photos found so far: " + totalPhotos;
+                    updateProgressText("Searched (" + (i + 1) + "/" + albumIDs.Count + ") Albums. New photos found so far: " + totalPhotos, worker);
                 else
-                    pd.labelText = "Searched (" + (i + 1) + "/" + albumIDs.Count + ") Albums. Photos found so far: " + totalPhotos;
-                worker.ReportProgress(0, pd);
+                    updateProgressText("Searched (" + (i + 1) + "/" + albumIDs.Count + ") Albums. Photos found so far: " + totalPhotos, worker);
             }
 
             Application.UseWaitCursor = false;
@@ -326,9 +326,6 @@ namespace FBPhotoDownloader
             string outputPath;
 
             outputPath = albumDirectory + "\\" + curPhoto.id;
-
-            while (System.IO.File.Exists(outputPath + ".jpg"))
-                outputPath += "_";
 
             //Make sure we don't go over windows path limits
             if (outputPath.Length > 255)
