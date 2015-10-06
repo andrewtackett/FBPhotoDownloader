@@ -102,10 +102,19 @@ namespace FBPhotoDownloader
         public static string performWebRequest(string url)
         {
             HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(url);
-            Stream response = webRequest.GetResponse().GetResponseStream();
-            StreamReader reader = new StreamReader(response);
+            try
+            {
+                Stream response = webRequest.GetResponse().GetResponseStream();
+                StreamReader reader = new StreamReader(response);
 
-            return reader.ReadToEnd();
+                return reader.ReadToEnd();
+            }
+            catch(WebException)
+            {
+                MessageBox.Show("Facebook access token in invalid/expired.  Please update user.txt with a new access token.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
+            return "";
         }
 
         public static string getPhotoLink(string url)
@@ -183,21 +192,9 @@ namespace FBPhotoDownloader
         private void downloadBtn_Click(object sender, EventArgs e)
         {
             //TODO:
-            //Handle access token error
             //Handle rate limit error?
             //Add error logging?
-            /*
-            make successive runs skip existing photos (how to deal with same name?)*/
-
-            //"https://graph.facebook.com/v2.4/10153371789554079?fields=images&access_token=" + accessToken
-            // /v2.4/me/albums -> get album ids,names (for folder names)
-            //loop on albums
-            // /v2.4/<album-id>/photos -> get photo ids, names (for photo names -> transform to no spaces?)
-            // e.g. /v2.4/10150145047609079/photos
-            //loop on photos
-            // /v2.4/<photo-id>?fields=images -> get image link
-            // e.g. /v2.4/10153371789554079?fields=images
-            // download image -> store in folder with name of album and name name of photo
+            //Scale thumbnail and keep aspect ration
             label1.Text = "download clicked!";
             if (bw.IsBusy != true)
             {
@@ -215,9 +212,12 @@ namespace FBPhotoDownloader
             label1.Text = pd.labelText;
 
             progressBar1.Value = e.ProgressPercentage;
-            //System.Threading.Thread.Sleep(500);
             if (pd.curPhotoPath != "")
-                pictureBox1.Image = Image.FromFile(pd.curPhotoPath).GetThumbnailImage(pictureBox1.Width, pictureBox1.Height, myCallback, IntPtr.Zero);
+            {
+                Image currentPhoto = Image.FromFile(pd.curPhotoPath);
+                Image thumbnail = currentPhoto.GetThumbnailImage(currentPhoto.Width, currentPhoto.Height, myCallback, IntPtr.Zero);
+                pictureBox1.Image = thumbnail;
+            }
         }
 
         private void bw_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
@@ -267,7 +267,6 @@ namespace FBPhotoDownloader
                 {
                     if (potentialExistingAlbums.Contains(stripIllegalCharacters(curAlbum.name)))
                     {
-                        //var existingPhotos = Directory.GetFiles(outputLocation + "\\" + curAlbum.name);
                         var existingPhotos = Directory.EnumerateFiles(outputLocation + "\\" + stripIllegalCharacters(curAlbum.name)).Select(Path.GetFileNameWithoutExtension);
                         foreach(string existingPhoto in existingPhotos)
                         {
