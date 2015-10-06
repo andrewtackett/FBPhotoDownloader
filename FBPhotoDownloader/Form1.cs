@@ -4,12 +4,16 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Runtime.Serialization;
+using Meta.Core.ImageMeta;
+using System.Windows.Media.Imaging;
 
 namespace FBPhotoDownloader
 {
@@ -110,12 +114,31 @@ namespace FBPhotoDownloader
             return response["images"][0]["source"].ToString();
         }
 
-        public static void downloadPhoto(string url, string fileName)
+        public static void ConvertToBitmap(string fileName)
+        {
+            Bitmap bitmap;
+            using (Stream bmpStream = System.IO.File.Open(fileName, System.IO.FileMode.Open))
+            {
+                Image image = Image.FromStream(bmpStream);
+                bitmap = new Bitmap(image);
+            }
+            bitmap.Save(fileName, ImageFormat.Bmp);
+        }
+
+        public static void downloadPhoto(string url, string fileName, string description)
         {
             WebClient wc = new WebClient();
             try
             {
+                StreamWriter sw = new StreamWriter(@"C:\fb\output.txt", true);
                 wc.DownloadFile(url, fileName);
+                ImageProcessor processor = new ImageProcessor(fileName);
+                ImageProperties properties = new ImageProperties();
+                properties.Comments = description;
+                if (!processor.TryWrite(properties))
+                    sw.WriteLine("couldn't write properties to image: " + fileName);
+                sw.Flush();
+                sw.Close();
             }
             catch (WebException e)
             {
@@ -162,9 +185,9 @@ namespace FBPhotoDownloader
             //TODO:
             //Handle access token error
             //Handle rate limit error?
+            //Add error logging?
             /*
-            make successive runs skip existing photos (how to deal with same name?)
-            write readme*/
+            make successive runs skip existing photos (how to deal with same name?)*/
 
             //"https://graph.facebook.com/v2.4/10153371789554079?fields=images&access_token=" + accessToken
             // /v2.4/me/albums -> get album ids,names (for folder names)
@@ -222,12 +245,6 @@ namespace FBPhotoDownloader
 
             string albumURL = "https://graph.facebook.com/v2.4/me/albums?access_token=" + accessToken;
             List<album> albumIDs = getAlbumData(albumURL);
-            /*List<album> albumIDs = new List<album>();
-            album test = new album();
-            test.name = "test";
-            test.id = "10153198026299079";
-            test.photos = new List<photo>();
-            albumIDs.Add(test);*/
 
             pd.labelText = "Getting list of photos";
             worker.ReportProgress(0, pd);
@@ -266,7 +283,7 @@ namespace FBPhotoDownloader
                     pd.curPhotoPath = outputPath;
                     pd.labelText = "(" + curPhotoNum + "/" + totalPhotos + ") " + outputPath;
 
-                    downloadPhoto(photoLink, outputPath);
+                    downloadPhoto(photoLink, outputPath,curPhoto.name);
                     curPhotoNum++;
                     int progress = (int)(((double)curPhotoNum / totalPhotos) * 100);
                     worker.ReportProgress(progress, pd);
@@ -278,12 +295,9 @@ namespace FBPhotoDownloader
         {
             string outputPath;
 
-            if (curPhoto.name == "")
-                outputPath = albumDirectory + "\\" + curPhoto.id;
-            else
-                outputPath = albumDirectory + "\\" + stripIllegalCharacters(curPhoto.name);
+            outputPath = albumDirectory + "\\" + curPhoto.id;
 
-            while (File.Exists(outputPath + ".jpg"))
+            while (System.IO.File.Exists(outputPath + ".jpg"))
                 outputPath += "_";
 
             //Make sure we don't go over windows path limits

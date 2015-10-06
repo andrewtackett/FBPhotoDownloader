@@ -36,6 +36,7 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="PresentationCore" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -46,6 +47,12 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
+    <Reference Include="XmpCore">
+      <HintPath>..\packages\XmpCore.1.1.0\lib\net35\XmpCore.dll</HintPath>
+    </Reference>
+    <Reference Include="XperiCode.JpegMetadata">
+      <HintPath>..\packages\XperiCode.JpegMetadata.0.9.0\lib\net30\XperiCode.JpegMetadata.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Form1.cs">
@@ -81,6 +88,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\muruge-meta-public-b6d7c93f2b87\Meta.Core\Meta.Core.csproj">
+      <Project>{056a599f-7e07-441a-ac08-c2d2ece3c1c9}</Project>
+      <Name>Meta.Core</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
